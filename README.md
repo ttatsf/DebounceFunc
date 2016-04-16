@@ -18,10 +18,13 @@ As these are "function" object, you can(and have to) use each instance as  "func
 
 //Instantiate function objects.
 // By default,the debounce time is 30[ms].
-IsFALLING isFalling0;  //or: IsFALLING isFalling0(10);  //you can set debounce time:
+IsFALLING isFalling0;  
+//or: IsFALLING isFalling0(10);  //you can set debounce time:
 
 //Instantiate array:
-IsFALLING isFalling[4]; //or: IsFALLING isFalling[4]={10,10,10,10};    //You can also set array's element's debounce time.This sets each to 10.
+IsFALLING isFalling[4];
+//or: IsFALLING isFalling[4]={10,10,10,10};    
+//You can also set array's element's debounce time.This sets each to 10.
 
 const int PIN_0 = 2;
 const int PIN[4]={3,4,5,6};
@@ -47,7 +50,10 @@ void loop(){
       //Do anything you want only when the debounced data is falling.
     }
   }
-  delay(1); //Regulate the loop()'s delay time. Longer delay may make your sketch stable,but it delays actions and reduces the debounce resolution.
+  delay(1);
+  //Regulate the loop()'s delay time.
+  //Longer delay may make your sketch stable,
+  //but it delays actions and reduces the debounce resolution.
 }
 ```
 You can also use other function objects in the same way.
