@@ -21,7 +21,7 @@ As these are "function" object, you can(and have to) use each instance as  "func
 IsFALLING isFalling0;  //or: IsFALLING isFalling0(10);  //you can set debounce time:
 
 //Instantiate array:
-IsFALLING isFalling[4]; //or: IsFALLING isFalling[4]={10,10,10,10};    //You can also set array's element's history size.This sets each to 10.
+IsFALLING isFalling[4]; //or: IsFALLING isFalling[4]={10,10,10,10};    //You can also set array's element's debounce time.This sets each to 10.
 
 const int PIN_0 = 2;
 const int PIN[4]={3,4,5,6};
