@@ -53,7 +53,7 @@ void loop(){
   delay(1);
   //Regulate the loop()'s delay time.
   //Longer delay may make your sketch stable,
-  //but it delays actions and reduces the debounce resolution.
+  //while it delays actions and reduces the debounce resolution.
 }
 ```
 You can also use other function objects in the same way.
