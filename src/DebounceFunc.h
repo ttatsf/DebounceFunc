@@ -4,60 +4,63 @@
 
 class DebounceFunc{
   public:
-    const int pin;
     const long debounce;
     int updatedVal;
     long updatedTime;
-    boolean buttonState;
-    boolean getButtonState();
-    DebounceFunc(int inPin);
-    DebounceFunc(int inPin,int deb);
+    boolean debouncedState;
+    boolean getDebouncedState(int newVal);
+    DebounceFunc(int initVal,long deb);
 };
 
 class IsFALLING{
   private:
     DebounceFunc debounceFunc;
-    boolean recentButtonState;
+    boolean recentState;
   public:
-    IsFALLING(int inPin);
-    IsFALLING(int inPin,int deb);
-    boolean operator()();
+    IsFALLING();
+    IsFALLING(int initVal);
+    IsFALLING(int initVal,long deb);
+    boolean operator()(int newVal);
 };
 class IsRISING{
   private:
     DebounceFunc debounceFunc;
-    boolean recentButtonState;
+    boolean recentState;
   public:
-    IsRISING(int inPin);
-    IsRISING(int inPin,int deb);
-    boolean operator()();
+    IsRISING();
+    IsRISING(int initVal);
+    IsRISING(int initVal,long deb);
+    boolean operator()(int newVal);
 };
 class IsCHANGE{
   private:
     DebounceFunc debounceFunc;
-    boolean recentButtonState;
+    boolean recentState;
   public:
-    IsCHANGE(int inPin);
-    IsCHANGE(int inPin,int deb);
-    boolean operator()();
+    IsCHANGE();
+    IsCHANGE(int initVal);
+    IsCHANGE(int initVal,long deb);
+    boolean operator()(int newVal);
 };
 class IsLOW{
   private:
     DebounceFunc debounceFunc;
-    boolean recentButtonState;
+    boolean recentState;
   public:
-    IsLOW(int inPin);
-    IsLOW(int inPin,int deb);
-    boolean operator()();
+    IsLOW();
+    IsLOW(int initVal);
+    IsLOW(int initVal,long deb);
+    boolean operator()(int newVal);
 };
 class IsHIGH{
   private:
     DebounceFunc debounceFunc;
-    boolean recentButtonState;
+    boolean recentState;
   public:
-    IsHIGH(int inPin);
-    IsHIGH(int inPin,int deb);
-    boolean operator()();
+    IsHIGH();
+    IsHIGH(int initVal);
+    IsHIGH(int initVal,long deb);
+    boolean operator()(int newVal);
 };
 
 #endif

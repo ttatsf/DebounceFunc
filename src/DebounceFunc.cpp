@@ -1,91 +1,94 @@
 #include "DebounceFunc.h"
-boolean DebounceFunc::getButtonState(){
-  int reading = digitalRead(pin);
-  long now = millis();
-  if (reading != updatedVal) {
-    updatedVal = reading;
+
+static const int DEB_DEFAULT = 30;
+
+boolean DebounceFunc::getDebouncedState(int newVal){
+  const long now = millis();
+  if (newVal != updatedVal) {
+    updatedVal = newVal;
     updatedTime = now;
   } 
-  if (buttonState) {
-    if (updatedVal) return true;
-    if (now - updatedTime > debounce ) {
-      buttonState = false;
-      return false;
-    }
-    return true;     
-  }
-  if (!updatedVal) return false;
-  if (now - updatedTime > debounce ) {
-    buttonState = true;
-    return true;
-  }
-  return false;
+  if (debouncedState) {
+    if (updatedVal)                     return true;
+    if (now - updatedTime > debounce ) {debouncedState = false;
+                                        return false;
+                                       }
+    else                                return true;     
+  } 
+  if (!updatedVal)                    return false;
+  if (now - updatedTime > debounce ) {debouncedState = true;
+                                      return true;
+                                     }
+  else                                return false;
 }
-DebounceFunc::DebounceFunc(int inPin):pin(inPin)
-                                     ,debounce(30){
-  updatedVal = 1;
+DebounceFunc::DebounceFunc(int initVal,long deb):updatedVal(initVal)
+                                               ,debounce(deb){
   updatedTime = millis();
-  buttonState = true;
-}
-DebounceFunc::DebounceFunc(int inPin,int deb):pin(inPin)
-                                             ,debounce(deb){
-  updatedVal = 1;
-  updatedTime = millis();
-  buttonState = true;
+  debouncedState = (boolean)updatedVal;
 }
 
-IsFALLING::IsFALLING(int inPin):debounceFunc(inPin){
-  recentButtonState = true;
+IsFALLING::IsFALLING():debounceFunc(1,DEB_DEFAULT){
+  recentState = debounceFunc.updatedVal;
 }
-IsFALLING::IsFALLING(int inPin,int deb):debounceFunc(inPin,deb){
-  recentButtonState = true;
+IsFALLING::IsFALLING(int initVal):debounceFunc(initVal,DEB_DEFAULT){
+  recentState = debounceFunc.updatedVal;
 }
-boolean IsFALLING::operator()(){
-  const boolean newState = debounceFunc.getButtonState();
-  const boolean ANSWER = recentButtonState && !newState;
-  recentButtonState = newState;
+IsFALLING::IsFALLING(int initVal,long deb):debounceFunc(initVal,deb){
+  recentState = debounceFunc.updatedVal;
+}
+boolean IsFALLING::operator()(int newVal){
+  const boolean newState = debounceFunc.getDebouncedState(newVal);
+  const boolean ANSWER = recentState && !newState;
+  recentState = newState;
   return ANSWER;
 }
 
-IsRISING::IsRISING(int inPin):debounceFunc(inPin){
-  recentButtonState = true;
+
+IsRISING::IsRISING():debounceFunc(1,DEB_DEFAULT){
+  recentState = debounceFunc.updatedVal;
 }
-IsRISING::IsRISING(int inPin,int deb):debounceFunc(inPin,deb){
-  recentButtonState = true;
+IsRISING::IsRISING(int initVal):debounceFunc(initVal,DEB_DEFAULT){
+  recentState = debounceFunc.updatedVal;
 }
-boolean IsRISING::operator()(){
-  const boolean newState = debounceFunc.getButtonState();
-  const boolean ANSWER = !recentButtonState && newState;
-  recentButtonState = newState;
+IsRISING::IsRISING(int initVal,long deb):debounceFunc(initVal,deb){
+  recentState = debounceFunc.updatedVal;
+}
+boolean IsRISING::operator()(int newVal){
+  const boolean newState = debounceFunc.getDebouncedState(newVal);
+  const boolean ANSWER = !recentState && newState;
+  recentState = newState;
   return ANSWER;
 }
 
-IsCHANGE::IsCHANGE(int inPin):debounceFunc(inPin){
-  recentButtonState = true;
+IsCHANGE::IsCHANGE():debounceFunc(1,DEB_DEFAULT){
+  recentState = debounceFunc.updatedVal;
 }
-IsCHANGE::IsCHANGE(int inPin,int deb):debounceFunc(inPin,deb){
-  recentButtonState = true;
+IsCHANGE::IsCHANGE(int initVal):debounceFunc(initVal,DEB_DEFAULT){
+  recentState = debounceFunc.updatedVal;
 }
-boolean IsCHANGE::operator()(){
-  const boolean newState = debounceFunc.getButtonState();
-  const boolean ANSWER = recentButtonState != newState;
-  recentButtonState = newState;
+IsCHANGE::IsCHANGE(int initVal,long deb):debounceFunc(initVal,deb){
+  recentState = debounceFunc.updatedVal;
+}
+boolean IsCHANGE::operator()(int newVal){
+  const boolean newState = debounceFunc.getDebouncedState(newVal);
+  const boolean ANSWER = recentState != newState;
+  recentState = newState;
   return ANSWER;
 }
 
-IsLOW::IsLOW(int inPin):debounceFunc(inPin){
-}
-IsLOW::IsLOW(int inPin,int deb):debounceFunc(inPin,deb){
-}
-boolean IsLOW::operator()(){
-  return !debounceFunc.getButtonState();
+IsLOW::IsLOW():debounceFunc(1,DEB_DEFAULT){}
+IsLOW::IsLOW(int initVal):debounceFunc(initVal,DEB_DEFAULT){}
+IsLOW::IsLOW(int initVal,long deb):debounceFunc(initVal,deb){}
+
+boolean IsLOW::operator()(int newVal){
+  return !debounceFunc.getDebouncedState(newVal);
 }
 
-IsHIGH::IsHIGH(int inPin):debounceFunc(inPin){
-}
-IsHIGH::IsHIGH(int inPin,int deb):debounceFunc(inPin,deb){
-}
-boolean IsHIGH::operator()(){
-  return debounceFunc.getButtonState();
+IsHIGH::IsHIGH():debounceFunc(1,DEB_DEFAULT){}
+IsHIGH::IsHIGH(int initVal):debounceFunc(initVal,DEB_DEFAULT){}
+IsHIGH::IsHIGH(int initVal,long deb):debounceFunc(initVal,deb){}
+
+boolean IsHIGH::operator()(int newVal){
+  return debounceFunc.getDebouncedState(newVal);
 }
 
