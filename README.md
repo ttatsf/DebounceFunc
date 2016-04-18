@@ -14,7 +14,7 @@ As these are "function" object, you can(and have to) use each instance as  "func
 
 
 ```
-#include "DebounceFunc.h"
+#include <DebounceFunc.h>
 
 //Instantiate function objects.
 // By default,the debounce time is 30[ms].
