@@ -38,15 +38,15 @@ void setup(){
 }
 void loop(){
   // regular pattern :
-  const int rawData = digitalRead(PIN_0);
-  if (isFalling0(rawData)) {
+  const int RAW_DATA = digitalRead(PIN_0);
+  if (isFalling0(RAW_DATA)) {
     //Do anything you want only when the debounced data is falling.
   }
 
   //regular pattern for array :
   for (int i=0; i < 4; i++) {
-    const int rawData = digitalRead(PIN[i]);
-    if (isFalling[i](rawData)) {
+    const int RAW_DATA = digitalRead(PIN[i]);
+    if (isFalling[i](RAW_DATA)) {
       //Do anything you want only when the debounced data is falling.
     }
   }
