@@ -8,7 +8,8 @@ DebounceFunc has 5 simple function objects.
 + "IsCHANGE" : calculate debounced data from incoming data, then return whether previous debounced data is not equal to  new debounced data.
 + "IsLOW" : calculate debounced data from incoming data, then return whether the data is LOW.
 + "IsHIGH" : calculate debounced data from incoming data, then return whether the data is HIGH.
-
+##Installation
+[Download ZIP](https://github.com/ttatsf/DebounceFunc/archive/master.zip) and [follow instructions here.](https://www.arduino.cc/en/Guide/Libraries)
 ##Typical usage
 As these are "function" object, you can(and have to) use each instance as  "function" directly.
 
