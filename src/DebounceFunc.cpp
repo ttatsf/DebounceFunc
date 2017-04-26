@@ -2,30 +2,31 @@
 
 static const int DEB_DEFAULT = 30;
 
+DebounceFunc::DebounceFunc(int initVal,long deb):debounce(deb)
+                                                , updatedVal(initVal) {
+  updatedTime = millis();
+  debouncedState = (boolean)updatedVal;
+}
 boolean DebounceFunc::getDebouncedState(int newVal){
   const long now = millis();
   if (newVal != updatedVal) {
     updatedVal = newVal;
     updatedTime = now;
-  } 
+  }
   if (debouncedState) {
     if (updatedVal)                     return true;
     if (now - updatedTime > debounce ) {debouncedState = false;
                                         return false;
                                        }
-    else                                return true;     
-  } 
+    else                                return true;
+  }
   if (!updatedVal)                    return false;
   if (now - updatedTime > debounce ) {debouncedState = true;
                                       return true;
                                      }
   else                                return false;
 }
-DebounceFunc::DebounceFunc(int initVal,long deb):updatedVal(initVal)
-                                               ,debounce(deb){
-  updatedTime = millis();
-  debouncedState = (boolean)updatedVal;
-}
+
 
 IsFALLING::IsFALLING():debounceFunc(1,DEB_DEFAULT){
   recentState = debounceFunc.updatedVal;
@@ -91,4 +92,3 @@ IsHIGH::IsHIGH(int initVal,long deb):debounceFunc(initVal,deb){}
 boolean IsHIGH::operator()(int newVal){
   return debounceFunc.getDebouncedState(newVal);
 }
-
